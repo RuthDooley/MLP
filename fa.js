@@ -311,7 +311,6 @@ function question3 (){
         testingResults[i] = [indexofMax(testingOutputs[i]), indexofMax(test), testingError];
         totalTestingError += testingError;
     }
-    console.log("Total testing error --> " + totalTestingError);
 
     //Printing the information
     fs.appendFile('file.txt', "Testing Results\nActual Answer\tPredicted Answer\tIndiv. Error\t\tCorrect?\t\n", (err) => { });
@@ -329,8 +328,12 @@ function question3 (){
         process.stdout.write(String.fromCharCode(testingResults[i][0] + 65) + "\t\t" + String.fromCharCode(testingResults[i][1] + 65) + "\t\t" + testingResults[i][2] + "\t\t\t" + String.fromCharCode(testingResults[i][3]) +  "\t\n");
         fs.appendFile('file.txt', String.fromCharCode(testingResults[i][0] + 65) + "\t\t" + String.fromCharCode(testingResults[i][1] + 65) + "\t\t" + testingResults[i][2] + "\t\t\t" + String.fromCharCode(testingResults[i][3]) +  "\t\n", (err) => { });
     }
+    console.log("Total testing error --> " + totalTestingError);
+    fs.appendFile('file.txt', "Total testing error --> " + totalTestingError, (err) => { });
+
     console.log("No. correct answers: " + count + " No tests: " + testingResults.length + "\n==>Accuracy: " + ((count/testingResults.length)*100) + "%");
     fs.appendFile('file.txt', "No. correct answers: " + count + " No tests: " + testingResults.length + "\n==>Accuracy: " + ((count/testingResults.length)*100) + "%", (err) => { });
+
 }
 
 function main (){
