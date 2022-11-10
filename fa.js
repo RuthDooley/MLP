@@ -24,13 +24,13 @@
 
 //For question 3
 let NI = 16;
-let NH = 12;
+let NH = 26;
 let NO = 26;
 let tan = false;
 
-let learningValue = 0.076997529;
-let updateFreq = 0.895;
-let maxEpochs = 1000;
+let learningValue = 0.15;
+let updateFreq = 0.33;
+let maxEpochs = 1500;
 
 let questionNumber = 3;
 
@@ -187,7 +187,7 @@ function question1 (){
     }
     process.stdout.write("|\n");
 
-    console.log("Total training error --> " + testingError);
+    console.log("Total testing error --> " + testingError);
 }
 
 function generateInputs (numInputs){
@@ -240,7 +240,7 @@ function question2 (){
         testingError += (Math.pow(testingInputs[i][0] - test[0], 2) * 0.5);
         console.log((Math.round(test[0] * 1000) / 1000) + " \t--->\t " + (Math.round(testingOutputs[i][0] * 1000) / 1000) + "\n|----------------------------------|");
     }
-    console.log("Total training error --> " + testingError);
+    console.log("Total testing error --> " + testingError);
 }
 
 function indexofMax(arr) {
@@ -263,7 +263,7 @@ function question3 (){
     text = text.replace(/\n/g, ",");
 
     let result = text.match(/(?:[^,]+(?:,|$)){1,17}/g);
-    result = result.slice(0, 500);
+    //result = result.slice(0, 500);
     
     let inputs = [...Array(result.length)].map(e => Array(16).fill(0.0));
     let outputs = [...Array(result.length)].map(e => Array(26).fill(0.0));
@@ -281,7 +281,7 @@ function question3 (){
     let testingOutputs = outputs.slice(result.length * proportion, result.length);
 
     randomise();
-    fs.writeFile('file.txt', "Results\n", (err) => {
+    fs.writeFile('file.txt', "Training Results\n", (err) => {
         if (err) throw err;
     })
     for (let e = 0; e < maxEpochs; e++) {
@@ -296,6 +296,41 @@ function question3 (){
         //Takes a lot of time to run, printing to the file 
         fs.appendFile('file.txt', e.toString() + ": " + error.toString() + "\n", 'utf8', (err) => { })
     }
+
+    console.log("\n\nTESTING");
+    let testingResults = [...Array(testingInputs.length)].map(e  => Array(4).fill(0.0));
+    let testingError = 0, totalTestingError = 0
+    for (let i = 0; i < testingInputs.length; i++){
+        testingError = 0 
+        let test = [...Array(NO).fill(0.0)];
+        test = forward(testingInputs[i]);
+        for (let j = 0; j < test.length; j++){
+            testingError += (Math.pow(testingOutputs[i][0] - test[0], 2) * 0.5);
+        }
+        //The array for printing: index of element of max value of actual output, index of element of max value of predicted output, individual test error
+        testingResults[i] = [indexofMax(testingOutputs[i]), indexofMax(test), testingError];
+        totalTestingError += testingError;
+    }
+    console.log("Total testing error --> " + totalTestingError);
+
+    //Printing the information
+    fs.appendFile('file.txt', "Testing Results\nActual Answer\tPredicted Answer\tIndiv. Error\t\tCorrect?\t\n", (err) => { });
+
+    process.stdout.write("Actual Answer\tPredicted Answer\tIndiv. Error\t\tCorrect?\t\n");
+    let count = 0;
+    for (let i = 0; i < testingResults.length; i++){
+        if (testingResults[i][0] == testingResults[i][1]){
+            testingResults[i][3] = 89;
+            count ++;
+        } else {
+            testingResults[i][3] = 78;
+        }
+        //Adding 66 To make up for 0th elements
+        process.stdout.write(String.fromCharCode(testingResults[i][0] + 65) + "\t\t" + String.fromCharCode(testingResults[i][1] + 65) + "\t\t" + testingResults[i][2] + "\t\t\t" + String.fromCharCode(testingResults[i][3]) +  "\t\n");
+        fs.appendFile('file.txt', String.fromCharCode(testingResults[i][0] + 65) + "\t\t" + String.fromCharCode(testingResults[i][1] + 65) + "\t\t" + testingResults[i][2] + "\t\t\t" + String.fromCharCode(testingResults[i][3]) +  "\t\n", (err) => { });
+    }
+    console.log("No. correct answers: " + count + " No tests: " + testingResults.length + "\n==>Accuracy: " + ((count/testingResults.length)*100) + "%");
+    fs.appendFile('file.txt', "No. correct answers: " + count + " No tests: " + testingResults.length + "\n==>Accuracy: " + ((count/testingResults.length)*100) + "%", (err) => { });
 }
 
 function main (){
