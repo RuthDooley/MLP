@@ -1,5 +1,8 @@
+# Introduction
+This GitHub repository houses the development for the final assignment of the 4th year module "Connectionist Computing" with the module code COMP30230. 
+
 # Description
-This GitHub repository houses the development for the final assignment of the 4th year module "Connectionist Computing" with the module code COMP30230. It focuses on the fine-tuning of a multi-layer perception model specifically designed to address the following set of questions:
+It focuses on the fine-tuning of a multi-layer perception model specifically designed to address the following set of questions:
 
 1. Train an MLP with 2 inputs, 3-4+ hidden units and one output on the following examples (XOR function):
    ((0, 0), 0)
