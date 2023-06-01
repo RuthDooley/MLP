@@ -1,3 +1,4 @@
+# Description
 This GitHub repository houses the development for the final assignment of the 4th year module "Connectionist Computing" with the module code COMP30230. It focuses on the fine-tuning of a multi-layer perception model specifically designed to address the following set of questions:
 
 1. Train an MLP with 2 inputs, 3-4+ hidden units and one output on the following examples (XOR function):
@@ -11,3 +12,12 @@ the (single component) output should be:
 sin(x1-x2+x3-x4)
 Now train an MLP with 4 inputs, at least 5 hidden units and one output on 400 of these examples and keep the remaining 100 for testing.
 4. What is the error on training at the end? How does it compare with the error on the test set? Do you think you have learned satisfactorily?
+
+# Deployment
+This application is programmed with Javascript and Node.js
+To run the program you need:
+* Download Node.js
+1. cd into the location of the fa.js file
+2. Type: node fa.js into the terminal
+
+To run the individual questions you need to comment and uncomment the comments at the top of the program (Line 1 - 35). The lines after this will all remain uncommented. For example to run question 1 the lines 1 - 36 should look like:
